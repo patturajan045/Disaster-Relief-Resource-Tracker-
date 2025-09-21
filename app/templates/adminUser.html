@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Management - Disaster Relief</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    
+</head>
+
+<body class="DashboardBody">
+
+    <div class="main-content">
+        <!-- Navbar -->
+        <header
+            class="top-navbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-white shadow-sm">
+            <h5 class="m-0 fw-bold"><i class="bi bi-people me-2"></i> User Management</h5>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-2 fs-4"></i>
+                    <span class="fw-semibold">Admin</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                    <li><a class="dropdown-item text-danger" href="/auth/logout"><i
+                                class="bi bi-box-arrow-right me-2"></i>Logout</a></li>
+                </ul>
+            </div>
+        </header>
+
+        <!-- User Table -->
+        <div class="card p-4 mt-3 shadow-sm">
+            <h6 class="mb-3">All Users</h6>
+            <table class="table table-bordered text-center" id="userTable">
+                <thead class="table-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        $(document).ready(function () {
+            const table = $('#userTable').DataTable({
+                ajax: { url: '/api/users', dataSrc: '' },
+                columns: [
+                    { data: null },
+                    { data: 'name' },
+                    { data: 'email' },
+                    { data: 'phone' },
+                    { data: 'role' },
+                    {
+                        data: null,
+                        render: (data) => `
+            <button class="btn btn-sm btn-primary me-1 editBtn"><i class="bi bi-pencil"></i></button>
+            <button class="btn btn-sm btn-danger deleteBtn"><i class="bi bi-trash"></i></button>
+          `
+                    }
+                ],
+                columnDefs: [
+                    { targets: 0, render: (d, t, r, m) => m.row + 1 }
+                ]
+            });
+
+            // 🔹 Edit User
+            $('#userTable').on('click', '.editBtn', function () {
+                const data = table.row($(this).parents('tr')).data();
+
+                Swal.fire({
+                    title: 'Edit User',
+                    html: `
+          <input id="swal-name" class="form-control mb-2" value="${data.name}" placeholder="Name">
+          <input id="swal-email" class="form-control mb-2" value="${data.email}" placeholder="Email">
+          <input id="swal-phone" class="form-control" value="${data.phone || ''}" placeholder="Phone">
+        `,
+                    showCancelButton: true,
+                    preConfirm: () => ({
+                        name: document.getElementById('swal-name').value,
+                        email: document.getElementById('swal-email').value,
+                        phone: document.getElementById('swal-phone').value
+                    })
+                }).then(res => {
+                    if (res.isConfirmed) {
+                        $.ajax({
+                            url: `/api/users/${data.id}`,
+                            type: 'PUT',
+                            contentType: 'application/json',
+                            data: JSON.stringify(res.value),
+                            success: r => {
+                                Swal.fire('Updated', r.message, 'success');
+                                table.ajax.reload();
+                            },
+                            error: x => Swal.fire('Error', x.responseJSON?.message || 'Something went wrong', 'error')
+                        });
+                    }
+                });
+            });
+
+            // 🔹 Delete User
+            $('#userTable').on('click', '.deleteBtn', function () {
+                const data = table.row($(this).parents('tr')).data();
+
+                Swal.fire({
+                    title: 'Delete User?',
+                    icon: 'warning',
+                    showCancelButton: true
+                }).then(r => {
+                    if (r.isConfirmed) {
+                        $.ajax({
+                            url: `/api/users/${data.id}`,
+                            type: 'DELETE',
+                            success: r => {
+                                Swal.fire('Deleted', r.message, 'success');
+                                table.ajax.reload();
+                            },
+                            error: x => Swal.fire('Error', x.responseJSON?.message || 'Something went wrong', 'error')
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

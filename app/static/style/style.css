@@ -1,0 +1,389 @@
+.btn-primary:hover {
+  background-color: #004080;
+}
+
+a.text-primary:hover {
+  text-decoration: underline;
+}
+
+/* Dashboard Layout */
+
+body.DashboardBody {
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f8f9fa;
+  display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+  background-color: #0d1b2a;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 260px;
+  overflow-y: auto;
+  padding: 20px;
+  transition: transform 0.3s ease;
+  z-index: 1050;
+}
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 10px;
+}
+
+/* Sidebar Links */
+.sidebar h4 {
+  color: #fff;
+}
+
+.sidebar .nav-link {
+  color: #cfd8e3;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  transition: background 0.3s ease, transform 0.2s ease, font-size 0.2s ease;
+}
+
+.sidebar .nav-link i {
+  font-size: 1.1rem;
+  margin-right: 8px;
+}
+
+/* Hover effect */
+.sidebar .nav-link:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff !important;
+  transform: translateX(5px);
+  font-size: 1.10rem;
+  border-radius: 6px;
+}
+
+/* Active link (stronger than hover) */
+.sidebar .nav-link.active {
+  background-color: #0d6efd !important;
+  /* Blue highlight */
+  color: #fff !important;
+  border-radius: 6px;
+  transform: none;
+  /* prevent hover transform from overriding */
+  font-size: 1rem;
+  /* keep consistent size */
+}
+
+
+/* Main Content */
+.main-content {
+  margin-left: 260px;
+  flex: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  transition: margin-left 0.3s ease;
+}
+
+/* Navbar */
+.top-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1100;
+  background: #fff;
+}
+
+.top-navbar .brand-title {
+  color: #0d6efd;
+  font-weight: 600;
+}
+
+.dropdown-menu {
+  border-radius: 10px;
+}
+
+/* Overlay */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.4);
+  display: none;
+  z-index: 1049;
+}
+
+.overlay.active {
+  display: block;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+
+  /* Top Navbar */
+  .top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    /* define navbar height */
+    z-index: 1100;
+  }
+
+  /* Sidebar sits below the navbar */
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    /* push below navbar */
+    left: 0;
+    width: 260px;
+    /* keep default sidebar width */
+    height: calc(100vh - 60px);
+    /* fill remaining viewport */
+    transform: translateX(-100%);
+    /* hidden by default */
+    transition: transform 0.3s ease;
+    z-index: 1050;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+
+  }
+
+  /* Main content below navbar */
+  .main-content {
+    margin-left: 0 !important;
+    padding-top: 60px;
+    /* avoid overlap with navbar */
+  }
+
+  /* Adjust font sizes for smaller screens */
+  .top-navbar .brand-title {
+    font-size: 1rem;
+  }
+
+  .dropdown-toggle span {
+    display: none;
+  }
+}
+
+
+@media (max-width: 400px) {
+
+  /* Top Navbar fixed full width */
+  .top-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    /* define navbar height */
+    z-index: 1100;
+  }
+
+  /* Sidebar sits below the navbar */
+  .sidebar {
+    top: 60px;
+    /* push below navbar */
+    height: calc(100vh - 60px);
+    /* fill remaining viewport */
+    transform: translateX(-100%);
+    /* hidden by default */
+    z-index: 1050;
+  }
+
+  .sidebar.active {
+    transform: translateX(0);
+    /* slide in when active */
+  }
+
+  /* Main content below navbar */
+  .main-content {
+    margin-left: 0 !important;
+    padding-top: 60px;
+    /* avoid overlap with navbar */
+  }
+
+  /* Tighter font sizes for mobile */
+  .top-navbar .brand-title {
+    font-size: 1rem;
+  }
+
+  .dropdown-toggle span {
+    display: none;
+  }
+}
+
+
+
+/* Hero Section and Indexpage */
+
+
+
+/* Hero Section */
+.hero-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 60px 20px;
+  /* background-color: #343a40; */
+  /* Fallback */
+}
+
+.hero-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.15);
+  z-index: 1;
+}
+
+.hero-section>* {
+  position: relative;
+  z-index: 2;
+}
+
+.hero-section h1 span {
+  color: #ffc107;
+}
+
+.hero-section .btn {
+  border-radius: 30px;
+  padding: 10px 25px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.hero-section .btn:hover {
+  transform: scale(1.05);
+}
+
+/* Features Section */
+.features-section {
+  padding: 80px 20px;
+  background-color: #f8f9fa;
+}
+
+.features-section .card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 15px;
+}
+
+.features-section .card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Footer */
+footer {
+  background: #212529;
+  color: #ddd;
+  padding: 40px 0;
+}
+
+footer a {
+  color: #ffc107;
+  text-decoration: none;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .hero-section {
+    padding: 40px 15px;
+  }
+
+  .hero-section h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero-section p {
+    font-size: 1.1rem;
+  }
+
+  .hero-section .btn {
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 12px;
+  }
+
+  .features-section .card {
+    padding: 30px 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  .hero-section {
+    min-height: 100vh;
+    padding: 30px 10px;
+  }
+
+  .hero-section h1 {
+    font-size: 1.8rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .hero-section .btn-lg {
+    font-size: 1rem;
+    padding: 8px 20px;
+  }
+
+  .features-section {
+    padding: 50px 15px;
+  }
+
+  footer {
+    padding: 20px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .hero-section h1 {
+    font-size: 1.6rem;
+  }
+
+  .hero-section p {
+    font-size: 1rem;
+  }
+
+  .hero-section .btn-lg {
+    font-size: 1rem;
+    padding: 8px 18px;
+    width: 100%;
+    max-width: 280px;
+    margin-bottom: 12px;
+  }
+
+  .features-section h2 {
+    font-size: 1.4rem;
+  }
+
+  .features-section .card {
+    padding: 25px 18px;
+  }
+
+  footer {
+    padding: 20px 8px;
+    font-size: 0.85rem;
+  }
+}

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Disaster Relief Resource Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="/static/style/style.css">
+</head>
+
+<body class="DashboardBody">
+
+    <!-- Sidebar -->
+    <div class="sidebar d-flex flex-column p-3" id="sidebar">
+        <h4 class="text-white mb-4 d-flex flex-column align-items-start">
+            <span class="d-flex align-items-center fs-4 fw-bold mt-2">
+                <i class="bi bi-globe-americas me-2"></i> Disaster Relief
+            </span>
+            <small class="text-white-50 ms-4 mt-1">Resource Tracker</small>
+        </h4>
+
+        <hr class="border-white opacity-100 mt-2">
+
+        <ul class="nav nav-pills flex-column">
+            <!-- Dashboard -->
+            <li class="mb-2">
+                <span class="text-uppercase small fw-bold text-secondary">Main</span>
+                <a href="/index" class="nav-link text-white mt-1"><i class="bi bi-house-door me-2"></i> Home</a>
+                <a href="/dashboard" class="nav-link text-white"><i class="bi bi-speedometer2 me-2"></i> Overview
+                    Dashboard</a>
+
+            </li>
+
+            <!-- Disaster Management -->
+            <li class="mb-2">
+                <span class="text-uppercase small fw-bold text-secondary">Disaster Management</span>
+                <a href="/disaster" class="nav-link text-white mt-1"><i class="bi bi-exclamation-triangle me-2"></i>
+                    Disaster
+                    Incidents</a>
+                <a href="/reliefcamp" class="nav-link text-white"><i class="bi bi-house-door me-2"></i> Relief Camps</a>
+                <a href="/taskAssignment" class="nav-link text-white"><i class="bi bi-list-task me-2"></i> Task
+                    Assignments</a>
+                <a href="/location" class="nav-link text-white"><i class="bi bi-map me-2"></i> Update Location</a>
+            </li>
+
+            <!-- Resources -->
+            <li class="mb-2">
+                <span class="text-uppercase small fw-bold text-secondary">Management</span>
+                <a href="/resources" class="nav-link text-white mt-1"><i class="bi bi-box-seam me-2"></i> Resource</a>
+                <a href="/volunteer" class="nav-link text-white"><i class="bi bi-people me-2"></i> Volunteer</a>
+                <a href="/reliefrequest" class="nav-link text-white"><i class="bi bi-file-earmark-text me-2"></i> Relief
+                    Requests</a>
+                <a href="/donation" class="nav-link text-white"><i class="bi bi-cash-coin me-2"></i> Donation</a>
+                <a href="/organization" class="nav-link text-white"><i class="bi bi-building me-2"></i>Organizations</a>
+
+            </li>
+
+            <!-- Communication -->
+            <li class="mb-2">
+                <span class="text-uppercase small fw-bold text-secondary">Communication</span>
+                <a href="/message" class="nav-link text-white mt-1"><i class="bi bi-chat-dots me-2"></i> Direct
+                    Messages</a>
+                <a href="/notification" class="nav-link text-white"><i class="bi bi-bell me-2"></i> System
+                    Notifications</a>
+
+            </li>
+
+            <!-- System -->
+            <li>
+                <span class="text-uppercase small fw-bold text-secondary">System</span>
+                <a href="/activitylogs" class="nav-link text-white mt-1"><i class="bi bi-journal-text me-2"></i>
+                    Activity Logs</a>
+
+            </li>
+        </ul>
+    </div>
+
+    <!-- Overlay (for mobile sidebar) -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Top Navbar -->
+        <div
+            class="top-navbar d-flex justify-content-between align-items-center px-3 py-2 border-bottom bg-white shadow-sm">
+
+            <!-- Left: Sidebar Toggle + Title -->
+            <div class="d-flex align-items-center">
+                <button class="btn d-lg-none me-2" style="color: #0d1b2a !important" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <span class="brand-title fs-5 fw-bold" style="color: #0d1b2a !important;">
+                    <i class="bi bi-building me-2 p-1"></i> Organization Directory
+                </span>
+
+            </div>
+
+            <!-- Right: User Dropdown -->
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-dark text-decoration-none dropdown-toggle"
+                    data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-2 fs-4" style="color: #0d1b2a !important ;"></i>
+                    <span class="fw-semibold" style="color: #0d1b2a !important ;">User Profile</span>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+                    <li>
+                        <h6 class="dropdown-header">Your Account</h6>
+                    </li>
+                    <li><a class="dropdown-item disabled" href="#"><i class="bi bi-person me-2"></i> {{name}}</a></li>
+                    <li><a class="dropdown-item disabled" href="#"><i class="bi bi-envelope me-2"></i> {{email}}</a>
+                    </li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Settings</a></li>
+                    <li><a class="dropdown-item text-danger" href="/auth/logout"><i
+                                class="bi bi-box-arrow-right me-2"></i>
+                            Logout</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="container py-4">
+
+            <!-- Page Header -->
+            <div
+                class="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center mb-4 gap-3">
+                <h5 class="mb-0 fw-semibold">
+                    Stronger together: building hope, one organization at a time.
+                </h5>
+                <button class="btn btn-primary shadow-sm" id="btnAddOrg">
+                    <i class="bi bi-plus-circle me-1"></i> Add Organization
+                </button>
+            </div>
+
+            <!-- Search & Filter Row -->
+            <div class="row g-3 mb-4">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <span class="input-group-text bg-light">
+                            <i class="bi bi-search"></i>
+                        </span>
+                        <input type="text" id="searchInput" class="form-control"
+                            placeholder="Search organizations by name..." aria-label="Search organizations by name">
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <select id="filterType" class="form-select">
+                        <option value="">All Types</option>
+                        <!-- Types dynamically filled by JS -->
+                    </select>
+                </div>
+            </div>
+
+            <!-- Organization Cards -->
+            <div class="row g-4" id="orgCards">
+                <!-- Cards dynamically inserted here -->
+            </div>
+
+        </div>
+
+
+        <!-- Organization Cards -->
+
+    </div>
+
+    <div class="modal fade" id="orgModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <form id="orgForm" class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Organization</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="orgId">
+                    <div class="mb-3">
+                        <label class="form-label">Organization Name</label>
+                        <input type="text" id="orgName" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <input type="text" id="orgType" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contact Number</label>
+                        <input type="text" id="orgContact" class="form-control" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.12.4/dist/sweetalert2.all.min.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const sidebar = document.getElementById("sidebar");
+            const overlay = document.getElementById("overlay");
+            const toggleBtn = document.getElementById("sidebarToggle");
+
+            // Sidebar toggle
+            toggleBtn?.addEventListener("click", () => {
+                sidebar.classList.toggle("active");
+                overlay.classList.toggle("active");
+            });
+
+            overlay?.addEventListener("click", () => {
+                sidebar.classList.remove("active");
+                overlay.classList.remove("active");
+            });
+
+            // Highlight active nav link
+            const currentPath = window.location.pathname.replace(/\/$/, ""); // remove trailing slash
+            document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+                const linkPath = link.getAttribute("href").replace(/\/$/, "");
+                if (linkPath === currentPath) {
+                    link.classList.add("active");
+                }
+            });
+        });
+    </script>
+    <script src="../static/js/organization.js"></script>
+</body>
+
+</html>
